@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from config import DevConfig
-from models import Recipe
+from models import Recipe, User
 from exts import db
 from flask_migrate import Migrate
 
@@ -32,6 +32,17 @@ recipe_model=api.model(
 class HelloResource(Resource):
     def get(self):
         return {"message": "Hello World"}
+    
+
+@api.route('/signup')
+class SignUp(Resource):
+    def post(self):
+        pass
+
+@api.route('/login')
+class Login(Resource):
+    def post(self):
+        pass
 
 
 @api.route('/recipes')
@@ -46,6 +57,7 @@ class RecipeResource(Resource):
         return recipes
     
     @api.marshal_with(recipe_model)
+    @api.expect(recipe_model)
     def post(self):
         """Create a new recipe"""
         
