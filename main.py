@@ -4,6 +4,7 @@ from config import DevConfig
 from models import Recipe, User
 from exts import db
 from flask_migrate import Migrate
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -26,6 +27,15 @@ recipe_model=api.model(
     }
 )
 
+signup_model = api.model(
+    'SignUp',
+    {
+        "username":fields.String(),
+        "email":fields.String(),
+        "password":fields.String()
+    }
+)
+
 
 
 @api.route('/hello')
@@ -36,8 +46,18 @@ class HelloResource(Resource):
 
 @api.route('/signup')
 class SignUp(Resource):
+    @api.expect(signup_model)
     def post(self):
+        data = request.get_json()
+
+        new_user = User(
+            username = data.get('username'),
+            email = data.get('email'),
+            password = ''
+        )
+
         pass
+
 
 @api.route('/login')
 class Login(Resource):
