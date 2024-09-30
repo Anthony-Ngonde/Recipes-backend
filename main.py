@@ -138,6 +138,7 @@ class RecipeResource(Resource):
 class RecipeResource(Resource):
 
     @api.marshal_with(recipe_model)
+    @jwt_required()
     def get(self, id):
         """Get a recipe by id"""
 
