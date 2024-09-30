@@ -33,7 +33,7 @@ class HelloResource(Resource):
 class RecipeResource(Resource):
 
     @recipe_ns.marshal_list_with(recipe_model)
-    @jwt_required()
+    # @jwt_required()
     def get(self):
         """Get all recipes"""
 
