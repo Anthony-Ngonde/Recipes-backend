@@ -27,3 +27,6 @@ class Recipe(db.Model):
     def update(self, title, description):
         self.title = title
         self.description = description
+
+        db.session.commit()
+    
