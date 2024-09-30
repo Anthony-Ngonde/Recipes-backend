@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from config import DevConfig
 from models import Recipe
@@ -33,13 +33,31 @@ class HelloResource(Resource):
 
 @api.route('/recipes')
 class RecipeResource(Resource):
+
+    @api.marshal_list_with(recipe_model)
     def get(self):
         """Get all recipes"""
-        pass
 
+        recipes=Recipe.query.all()
+
+        return recipes
+    
+    @api.marshal_with(recipe_model)
     def post(self):
         """Create a new recipe"""
-        pass
+        
+        data = request.get_json()
+
+        new_recipe = Recipe(
+            title = data.get('title'),
+            description = data.get('description')
+        )
+
+        new_recipe.save()
+
+        return new_recipe, 201
+        
+
 
 @api.route('/recipe/<int:id>')
 class RecipeResource(Resource):
@@ -51,7 +69,8 @@ class RecipeResource(Resource):
         """Update a recipe by id"""
         pass
 
-    def
+    def delete(self,id):
+        """Delete a recipe by id"""
 
 
 
