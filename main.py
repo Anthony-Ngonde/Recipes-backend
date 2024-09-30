@@ -5,7 +5,7 @@ from models import Recipe, User
 from exts import db
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import JWTManager, create_access_token, create_refresh_token
+from flask_jwt_extended import JWTManager, create_access_token, create_refresh_token, jwt_required
 
 
 app = Flask(__name__)
@@ -106,6 +106,7 @@ class Login(Resource):
 class RecipeResource(Resource):
 
     @api.marshal_list_with(recipe_model)
+    @jwt_required()
     def get(self):
         """Get all recipes"""
 
@@ -113,8 +114,10 @@ class RecipeResource(Resource):
 
         return recipes
     
+    
     @api.marshal_with(recipe_model)
     @api.expect(recipe_model)
+    @jwt_required()
     def post(self):
         """Create a new recipe"""
         
@@ -141,8 +144,11 @@ class RecipeResource(Resource):
         recipe = Recipe.query.get_or_404(id)
 
         return recipe
+    
 
     @api.marshal_with(recipe_model)
+
+    @jwt_required()
     def put(self,id):
         """Update a recipe by id"""
 
@@ -154,7 +160,9 @@ class RecipeResource(Resource):
 
         return recipe_to_update
     
+    
     @api.marshal_with(recipe_model)
+    @jwt_required()
     def delete(self,id):
         """Delete a recipe by id"""
 
